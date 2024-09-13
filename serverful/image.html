@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Processing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container main-container">
+        <h1 class="text-center mb-4">Upload and Process Image</h1>
+        <form id="imageForm" class="card p-4 shadow">
+            <div class="mb-3">
+                <label for="imageUpload" class="form-label">Choose Image</label>
+                <input type="file" class="form-control" id="imageUpload" accept="image/*" required>
+            </div>
+            <div class="mb-3">
+                <label for="formatSelect" class="form-label">Select Format</label>
+                <select class="form-select" id="formatSelect" required>
+                    <option value="png">PNG</option>
+                    <option value="jpg">JPG</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="rotateAngle" class="form-label">Rotation Angle (0-360)</label>
+                <input type="number" class="form-control" id="rotateAngle" placeholder="Enter rotation angle" min="0" max="360">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Upload & Process Image</button>
+        </form>
+        <div id="result" class="mt-4 text-center d-none">
+            <h5>Image Processed Successfully!</h5>
+            <a id="imageLink" href="#" target="_blank" class="btn btn-success mt-2">View Processed Image</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('imageForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent form from submitting the default way
+
+            const imageUpload = document.getElementById('imageUpload').files[0];
+            const formatSelect = document.getElementById('formatSelect').value;
+            const rotateAngle = document.getElementById('rotateAngle').value || 0;
+
+            if (!imageUpload) {
+                alert('Please select an image.');
+                return;
+            }
+
+            // Create a FormData object to send the file and other parameters
+            const formData = new FormData();
+            formData.append('image', imageUpload);
+            formData.append('format', formatSelect);
+            formData.append('rotation', rotateAngle);
+
+            try {
+                const response = await axios.post('https://pfwh4etkv2.execute-api.ap-southeast-2.amazonaws.com/Dev/process_image', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                // Show result and processed image link
+                document.getElementById('result').classList.remove('d-none');
+                document.getElementById('imageLink').href = response.data.url; // Assuming the API returns a URL in the response
+
+            } catch (error) {
+                console.error('Error uploading and processing image:', error);
+                alert('Error uploading and processing image. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Include Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container main-container">
+        <h2 class="text-center">Add Task</h2>
+        <form id="addTaskForm">
+            <div class="form-group">
+                <label for="taskTitle">Task Title</label>
+                <input type="text" class="form-control" id="taskTitle" placeholder="Enter task title" required>
+            </div>
+            <div class="form-group">
+                <label for="taskDescription">Task Description</label>
+                <textarea class="form-control" id="taskDescription" rows="3" placeholder="Enter task description" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+        <p class="text-center mt-3"><a href="index.html">Back to Home</a></p>
+    </div>
+
+    <script src="config.json"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

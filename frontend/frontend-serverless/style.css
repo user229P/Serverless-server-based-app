@@ -1,0 +1,35 @@
+body {
+    background-color: #141414;
+    font-family: 'Arial', sans-serif;
+    color: white;
+}
+body h1{
+    text-align: center;
+    margin-bottom: 50px;
+    color: #0a0a0a;
+}
+
+.main-container {
+    margin-top: 100px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 10px 10px 30px #0a0a0a, -10px -10px 30px #2e2e2e;
+}
+
+button {
+    margin: 10px;
+    padding: 15px 30px;
+    border-radius: 20px;
+    font-size: 16px;
+    background: #282828;
+    color: #ffffff;
+    border: none;
+    box-shadow: 6px 6px 12px #121212, -6px -6px 12px #3c3c3c;
+    transition: transform 0.1s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}

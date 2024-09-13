@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter</title>
+</head>
+<body>
+    <h1>Upload and Process Image</h1>
+    <form id="uploadForm">
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" accept="image/png, image/jpeg"><br><br>
+        <label for="format">Convert to:</label>
+        <select id="format">
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
+        </select><br><br>
+        <label for="rotation">Rotate (degrees):</label>
+        <input type="number" id="rotation" value="0"><br><br>
+        <button type="submit">Upload & Process</button>
+    </form>
+
+    <div id="result" style="margin-top: 20px;"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const imageFile = document.getElementById('image').files[0];
+            const format = document.getElementById('format').value;
+            const rotation = document.getElementById('rotation').value;
+
+            if (!imageFile) {
+                alert('Please upload an image.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = async function() {
+                const base64Image = reader.result.split(',')[1];
+                console.log(base64Image, format, rotation);
+                const response = await fetch('https://5t7uznm7n0.execute-api.ap-south-1.amazonaws.com/dev/process_image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        image: base64Image,
+                        format: format,
+                        rotation: rotation
+                    })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById('result').innerHTML = `<p>Processed Image URL: <a href="${result.image_url}" target="_blank">${result.image_url}</a></p>`;
+                } else {
+                    document.getElementById('result').innerText = `Error: ${result.error}`;
+                }
+            };
+
+            reader.readAsDataURL(imageFile);
+        });
+    </script>
+</body>
+</html>
